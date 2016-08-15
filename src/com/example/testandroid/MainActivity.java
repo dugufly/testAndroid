@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
         IntentFilter filter=new IntentFilter();
         filter.addAction(Intent.ACTION_TIME_TICK);
         registerReceiver(receiver,filter);
-        native_Init();
+//        native_Init();
         //testInflact();
     }
 
@@ -94,10 +94,10 @@ public class MainActivity extends Activity {
       }
     };
     
-    static private native void native_Init();
-    static private native void native_Uninit();
-    static{
-    	System.loadLibrary("MyCapture");
-    
-    }
+//    static private native void native_Init();
+//    static private native void native_Uninit();
+//    static{
+//    	System.loadLibrary("MyCapture");
+//    
+//    }
 }
