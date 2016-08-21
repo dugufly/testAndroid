@@ -1,4 +1,7 @@
-package com.example.testandroid;
+package com.as.test2MatrixView;
+
+import com.example.testandroid.R;
+import com.example.testandroid.R.drawable;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -53,16 +56,16 @@ public class MatrixView extends ImageView{
     {
     	super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) 
-    {
-    	super.onLayout(changed, left, top, right, bottom);
-    	if(changed)
-    	{
-    	int width=Math.max(mIndex*100, 100);
-    	layout(left,top,left+width,top+width);
-    	}
-    }
+//    @Override
+//    protected void onLayout(boolean changed, int left, int top, int right, int bottom) 
+//    {
+//    	super.onLayout(changed, left, top, right, bottom);
+//    	if(changed)
+//    	{
+//    	int width=Math.max(mIndex*100, 100);
+//    	layout(left,top,left+width,top+width);
+//    	}
+//    }
   
     @Override  
     public void setImageMatrix(Matrix matrix)  
@@ -219,25 +222,25 @@ public class MatrixView extends ImageView{
  
     }
 	    
-	  @Override
-	    public boolean onTouchEvent(MotionEvent e)  
-	    {  
-	        if(e.getAction() == MotionEvent.ACTION_UP)  
-	        {  
+	@Override
+    public boolean onTouchEvent(MotionEvent e)  
+    {  
+        if(e.getAction() == MotionEvent.ACTION_UP)  
+        {  
 //	        	Matrix mat=getMat();
 //	        	setImageMatrix(mat); 
-	        	
-	        	
-	        	
-	        	getMatrix(mIndex);
-	        	mIndex=(++mIndex)%10;
-	            //invalidate();  
-	            
-	           // ViewGroup.LayoutParams params=getLayoutParams();
-	           // params.width=Math.max(mIndex*100, 100);
-	            requestLayout();
-	        }  
-	        return true;  
-	    }  
+        	
+        	
+        	
+        	getMatrix(mIndex);
+        	mIndex=(++mIndex)%10;
+            //invalidate();  
+            
+           // ViewGroup.LayoutParams params=getLayoutParams();
+           // params.width=Math.max(mIndex*100, 100);
+           // requestLayout();
+        }  
+        return true;  
+    }  
 	
 }

@@ -1,4 +1,4 @@
-package com.as.testReflect;
+package com.as.test3Reflect;
 
 import android.util.Log;
 

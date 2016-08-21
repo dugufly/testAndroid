@@ -1,41 +1,60 @@
 package com.example.testandroid;
 
-import java.nio.ByteBuffer;
+
+import com.as.FragmentBase.MyFragment;
+import com.as.test2MatrixView.test2Fragment;
+import com.as.test3Reflect.test3Fragment;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 
 public class MainActivity extends Activity {
 
-	RelativeLayout rootView;
+	private RelativeLayout rootView;
+	private ListView mMainListView=null;
+	private MyFragment[] aryFragments={
+			new test2Fragment(),
+			new test3Fragment()
+	};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    	super.onCreate(savedInstanceState);
         rootView=(RelativeLayout)LayoutInflater.from(this).inflate(R.layout.activity_main, null);
         setContentView(rootView);
         
+
         IntentFilter filter=new IntentFilter();
         filter.addAction(Intent.ACTION_TIME_TICK);
         registerReceiver(receiver,filter);
-//        native_Init();
-        //testInflact();
+        addFragment(new ListFragment(), "MainFragment",false);
     }
 
 
+    private void addFragment(Fragment fragment, String tag,boolean bAddToBackStack) {
+        FragmentManager manager = getFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.add(R.id.fragment_container, fragment, tag);
+        if(bAddToBackStack)
+        	transaction.addToBackStack(tag);
+        transaction.commit();
+    }
     
    void testInflact()
    {
@@ -61,25 +80,7 @@ public class MainActivity extends Activity {
    }
    
 
-    
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
     
     
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -94,6 +95,45 @@ public class MainActivity extends Activity {
       }
     };
     
+    class ListFragment extends Fragment
+    {
+    	@Override
+    	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    			Bundle savedInstanceState) {
+    		// TODO Auto-generated method stub
+    		String aryFragmentNames[]=new String[aryFragments.length];
+    		for (int i=0;i<aryFragments.length;i++) {
+    			aryFragmentNames[i]=aryFragments[i].getDescription();
+			}
+    		final String []aryFragmentNames2=aryFragmentNames;
+    		
+    		Context context=container.getContext();
+    		ArrayAdapter<String> adapter =
+    				new ArrayAdapter<String>(context, R.layout.mainlistitem, R.id.mainlistitemname, aryFragmentNames);
+            mMainListView=new ListView(context) ;//(ListView)findViewById(R.id.mainlist);
+            mMainListView.setAdapter(adapter);
+            mMainListView.setOnItemClickListener(new OnItemClickListener() {
+
+    			@Override
+    			public void onItemClick(AdapterView<?> parent, View view,
+    					int position, long id) {
+    				// TODO Auto-generated method stub
+    				addFragment(aryFragments[position], aryFragmentNames2[position], true);
+    				
+    			}
+            	
+    		});
+            
+    		return mMainListView;
+    	}
+    }
+    
+    
+    
+//    public interface IListItemName
+//    {
+//    	public String  getDescription();
+//    }
 //    static private native void native_Init();
 //    static private native void native_Uninit();
 //    static{
